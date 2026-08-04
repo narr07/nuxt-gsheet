@@ -1,0 +1,9 @@
+packages:
+  - '.'
+  - 'playground'
+  - 'docs'
+
+allowBuilds:
+  esbuild: true
+  vue-demi: true
+  unrs-resolver: true

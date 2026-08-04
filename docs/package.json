@@ -35,13 +35,5 @@
     "eslint": "^10.8.0",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.9"
-  },
-  "packageManager": "pnpm@11.18.0",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "vue-demi",
-      "unrs-resolver"
-    ]
   }
 }
