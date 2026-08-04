@@ -5,7 +5,17 @@ interface ExtendedComposablesOptions extends ComposablesOptions {
 	key?: string
 }
 
-export function useGSheetAsObject<T = any[]>(range: string, options: ExtendedComposablesOptions = {}) {
+export function useGSheetAsObject<T = any[]>(
+	range: string,
+	options: ExtendedComposablesOptions = {}
+): {
+	data: any
+	pending: any
+	error: any
+	refresh: () => Promise<void>
+	execute: () => Promise<void>
+	status: any
+} {
 	return useGSheet<T>(range, {
 		...options,
 		key: options.key || `gsheet_object:${range}`,

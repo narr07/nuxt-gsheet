@@ -5,7 +5,18 @@ interface ExtendedComposablesOptions extends ComposablesOptions {
 	key?: string
 }
 
-export function useGSheetRow<T = any>(range: string, rowIndex: number, options: ExtendedComposablesOptions = {}) {
+export function useGSheetRow<T = any>(
+	range: string,
+	rowIndex: number,
+	options: ExtendedComposablesOptions = {}
+): {
+	data: any
+	pending: any
+	error: any
+	refresh: () => Promise<void>
+	execute: () => Promise<void>
+	status: any
+} {
 	return useGSheet<T>(range, {
 		...options,
 		key: options.key || `gsheet_row:${rowIndex}:${range}`,

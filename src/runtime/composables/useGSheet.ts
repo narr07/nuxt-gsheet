@@ -6,7 +6,14 @@ interface ExtendedComposablesOptions extends ComposablesOptions {
 	key?: string
 }
 
-export function useGSheet<T = any>(range: string, options: ExtendedComposablesOptions = {}) {
+export function useGSheet<T = any>(range: string, options: ExtendedComposablesOptions = {}): {
+	data: any
+	pending: any
+	error: any
+	refresh: () => Promise<void>
+	execute: () => Promise<void>
+	status: any
+} {
 	const bypass = ref(false)
 
 	const queryParams = computed(() => {
