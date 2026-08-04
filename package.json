@@ -53,5 +53,12 @@
     "typescript": "^5.4.0",
     "vitest": "^4.1.10",
     "vue-tsc": "^3.3.9"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "vue-demi",
+      "unrs-resolver"
+    ]
   }
 }
