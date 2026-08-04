@@ -1,6 +1,6 @@
 {
   "name": "nuxt-gsheet",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Zero-config, high-performance, secure Google Sheets integration for Nuxt 3 and 4 with built-in stampede protection and DevTools dashboard.",
   "repository": "narr07/nuxt-gsheet",
   "license": "MIT",

@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v1.1.1
+
+[compare changes](https://github.com/narr07/nuxt-gsheet/compare/v1.1.0...v1.1.1)
+
+### 📖 Documentation
+
+- Customize root README.md and package.json description for nuxt-gsheet ([270dc2b](https://github.com/narr07/nuxt-gsheet/commit/270dc2b))
+
+### 🏡 Chore
+
+- Update repository path to narr07/nuxt-gsheet ([88974ce](https://github.com/narr07/nuxt-gsheet/commit/88974ce))
+
+### ❤️ Contributors
+
+- Dinar, Permadi ([@narr07](https://github.com/narr07))
+
 ## v1.1.0
 
 
