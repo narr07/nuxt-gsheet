@@ -2,7 +2,7 @@
   "name": "nuxt-gsheet",
   "version": "1.1.0",
   "description": "My new Nuxt module",
-  "repository": "your-org/my-module",
+  "repository": "narr07/nuxt-gsheet",
   "license": "MIT",
   "type": "module",
   "exports": {
