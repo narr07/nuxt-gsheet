@@ -38,9 +38,11 @@ export default defineEventHandler(async (event) => {
 	if (!resolvedMode) {
 		if (appscriptUrl) {
 			resolvedMode = 'appscript'
-		} else if (clientEmail && privateKey) {
+		}
+		else if (clientEmail && privateKey) {
 			resolvedMode = 'service-account'
-		} else {
+		}
+		else {
 			throw createError({
 				statusCode: 400,
 				statusMessage: 'Write operations are not supported in read-only auth modes.',
@@ -57,7 +59,8 @@ export default defineEventHandler(async (event) => {
 		const mappingStr = String(mapping)
 		if (mappingStr.startsWith('http')) {
 			targetAppscriptUrl = mappingStr
-		} else {
+		}
+		else {
 			targetSpreadsheetId = mappingStr
 		}
 	}
@@ -82,7 +85,8 @@ export default defineEventHandler(async (event) => {
 			}
 			incrementQuotaUsage(1)
 			return { success: true }
-		} else if (resolvedMode === 'service-account') {
+		}
+		else if (resolvedMode === 'service-account') {
 			if (!targetSpreadsheetId) {
 				throw new Error('Spreadsheet ID is missing.')
 			}
@@ -98,7 +102,7 @@ export default defineEventHandler(async (event) => {
 			const res = await $fetch<any>(url.toString(), {
 				method: 'POST',
 				headers: {
-					Authorization: `Bearer ${accessToken}`,
+					'Authorization': `Bearer ${accessToken}`,
 					'Content-Type': 'application/json'
 				},
 				body: {
@@ -110,10 +114,12 @@ export default defineEventHandler(async (event) => {
 
 			incrementQuotaUsage(1)
 			return { success: true, updates: res.updates }
-		} else {
+		}
+		else {
 			throw new Error(`Write actions are not supported for mode: ${resolvedMode}`)
 		}
-	} catch (err: any) {
+	}
+	catch (err: any) {
 		console.error(`[nuxt-gsheet] Append Error (${resolvedMode}):`, err.message || err)
 		throw createError({
 			statusCode: err.statusCode || 500,

@@ -9,7 +9,8 @@ export function useGSheetWrite(globalOptions: { sheet?: string } = {}) {
 				values: arg2,
 				sheet: globalOptions.sheet
 			}
-		} else {
+		}
+		else {
 			body = { ...arg1 }
 			if (globalOptions.sheet && !body.sheet) {
 				body.sheet = globalOptions.sheet
@@ -29,7 +30,8 @@ export function useGSheetWrite(globalOptions: { sheet?: string } = {}) {
 				values: arg2,
 				sheet: globalOptions.sheet
 			}
-		} else {
+		}
+		else {
 			body = { ...arg1 }
 			if (globalOptions.sheet && !body.sheet) {
 				body.sheet = globalOptions.sheet
@@ -48,7 +50,8 @@ export function useGSheetWrite(globalOptions: { sheet?: string } = {}) {
 				range: arg1,
 				sheet: globalOptions.sheet
 			}
-		} else {
+		}
+		else {
 			body = { ...arg1 }
 			if (globalOptions.sheet && !body.sheet) {
 				body.sheet = globalOptions.sheet

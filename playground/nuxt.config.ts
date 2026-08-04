@@ -4,7 +4,7 @@ export default defineNuxtConfig({
 	],
 	devtools: { enabled: true },
 	compatibilityDate: 'latest',
-	
+
 	// Configure Google Sheets module options using environment variables
 	gsheet: {
 		auth: 'appscript',

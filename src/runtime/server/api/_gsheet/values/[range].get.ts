@@ -37,13 +37,17 @@ export default defineEventHandler(async (event) => {
 	if (!resolvedMode) {
 		if (appscriptUrl) {
 			resolvedMode = 'appscript'
-		} else if (apiKey) {
+		}
+		else if (apiKey) {
 			resolvedMode = 'apikey'
-		} else if (clientEmail && privateKey) {
+		}
+		else if (clientEmail && privateKey) {
 			resolvedMode = 'service-account'
-		} else if (spreadsheetId) {
+		}
+		else if (spreadsheetId) {
 			resolvedMode = 'gviz'
-		} else {
+		}
+		else {
 			resolvedMode = 'gviz' // fallback
 		}
 	}
@@ -58,9 +62,11 @@ export default defineEventHandler(async (event) => {
 		const mappingStr = String(mapping)
 		if (mappingStr.startsWith('http')) {
 			targetAppscriptUrl = mappingStr
-		} else if (resolvedMode === 'csv') {
+		}
+		else if (resolvedMode === 'csv') {
 			targetGid = mapping
-		} else {
+		}
+		else {
 			targetSpreadsheetId = mappingStr
 		}
 	}
@@ -150,7 +156,8 @@ export default defineEventHandler(async (event) => {
 			}
 			fetchedData = res.data
 			incrementQuotaUsage(1)
-		} else if (resolvedMode === 'csv') {
+		}
+		else if (resolvedMode === 'csv') {
 			if (!targetSpreadsheetId) {
 				throw createError({
 					statusCode: 400,
@@ -168,7 +175,8 @@ export default defineEventHandler(async (event) => {
 			const csvText = await res.text()
 			fetchedData = parseCsv(csvText)
 			incrementQuotaUsage(1)
-		} else if (resolvedMode === 'gviz') {
+		}
+		else if (resolvedMode === 'gviz') {
 			if (!targetSpreadsheetId) {
 				throw createError({
 					statusCode: 400,
@@ -195,7 +203,8 @@ export default defineEventHandler(async (event) => {
 			}
 			fetchedData = parseGvizResponse(json)
 			incrementQuotaUsage(1)
-		} else if (resolvedMode === 'apikey') {
+		}
+		else if (resolvedMode === 'apikey') {
 			if (!targetSpreadsheetId) {
 				throw createError({
 					statusCode: 400,
@@ -220,7 +229,8 @@ export default defineEventHandler(async (event) => {
 			const res = await $fetch<any>(url.toString())
 			fetchedData = res.values || []
 			incrementQuotaUsage(1)
-		} else if (resolvedMode === 'service-account') {
+		}
+		else if (resolvedMode === 'service-account') {
 			if (!targetSpreadsheetId) {
 				throw createError({
 					statusCode: 400,
@@ -250,7 +260,8 @@ export default defineEventHandler(async (event) => {
 			})
 			fetchedData = res.values || []
 			incrementQuotaUsage(1)
-		} else {
+		}
+		else {
 			throw createError({
 				statusCode: 400,
 				statusMessage: `Unsupported or invalid authentication mode: ${resolvedMode}`,
@@ -276,7 +287,8 @@ export default defineEventHandler(async (event) => {
 		})
 
 		return fetchedData
-	} catch (err: any) {
+	}
+	catch (err: any) {
 		// Clean lock on error
 		if (config.cache?.enabled !== false) {
 			await cacheStorage.removeItem(lockKey).catch(() => {})
@@ -296,7 +308,7 @@ export default defineEventHandler(async (event) => {
 
 		const statusCode = err.statusCode || 500
 		const statusMessage = err.statusMessage || err.message || String(err)
-		
+
 		console.error(`[nuxt-gsheet] API Error (${resolvedMode}):`, statusMessage)
 		if (statusCode === 403 || statusMessage.includes('permission') || statusMessage.includes('accessor')) {
 			console.warn('[nuxt-gsheet] Access unauthorized. Make sure the spreadsheet is set to "Anyone with link can view" or shared with your Service Account email.')
@@ -305,20 +317,22 @@ export default defineEventHandler(async (event) => {
 				statusMessage: 'Access unauthorized: Spreadsheet is private or public access is disabled.',
 				data: { errorCode: 'UNAUTHORIZED' }
 			})
-		} else if (statusCode === 404 || statusMessage.includes('not found') || statusMessage.includes('range')) {
+		}
+		else if (statusCode === 404 || statusMessage.includes('not found') || statusMessage.includes('range')) {
 			throw createError({
 				statusCode: 404,
 				statusMessage: 'Sheet or range not found. Verify spreadsheetId, sheet name, and cell range coordinates.',
 				data: { errorCode: 'NOT_FOUND' }
 			})
-		} else if (statusCode === 429 || statusMessage.includes('quota')) {
+		}
+		else if (statusCode === 429 || statusMessage.includes('quota')) {
 			throw createError({
 				statusCode: 429,
 				statusMessage: 'Google Sheets API quota exceeded.',
 				data: { errorCode: 'QUOTA_EXCEEDED' }
 			})
 		}
-		
+
 		throw createError({
 			statusCode,
 			statusMessage: `Fetching error: ${statusMessage}`,

@@ -12,12 +12,14 @@ export function getCacheStorage(config: any) {
 			storage = (globalThis as any).useStorage?.('gsheet') || (globalThis as any).useStorage?.() || createStorage({
 				driver: memoryDriver()
 			})
-		} catch {
+		}
+		catch {
 			storage = createStorage({
 				driver: memoryDriver()
 			})
 		}
-	} else {
+	}
+	else {
 		// Mock storage or memory driver when cache is disabled
 		storage = createStorage({
 			driver: memoryDriver()

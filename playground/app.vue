@@ -3,21 +3,32 @@
 		<header class="app-header">
 			<div class="logo-area">
 				<div class="logo-box">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3H19ZM19 7.5H14.5V5H19V7.5ZM13 5V7.5H8.5V5H13ZM5 5H7V7.5H5V5ZM5 9H7V11.5H5V9ZM5 13H7V15.5H5V13ZM5 17H7V19H5V17ZM8.5 19V17H13V19H8.5ZM14.5 19V17H19V19H14.5ZM19 15.5H14.5V13H19V15.5ZM13 13V15.5H8.5V13H13ZM8.5 11.5V9H13V11.5H8.5ZM14.5 11.5V9H19V11.5H14.5Z" fill="#10B981"/>
+					<svg
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3H19ZM19 7.5H14.5V5H19V7.5ZM13 5V7.5H8.5V5H13ZM5 5H7V7.5H5V5ZM5 9H7V11.5H5V9ZM5 13H7V15.5H5V13ZM5 17H7V19H5V17ZM8.5 19V17H13V19H8.5ZM14.5 19V17H19V19H14.5ZM19 15.5H14.5V13H19V15.5ZM13 13V15.5H8.5V13H13ZM8.5 11.5V9H13V11.5H8.5ZM14.5 11.5V9H19V11.5H14.5Z"
+							fill="#10B981"
+						/>
 					</svg>
 				</div>
 				<div>
 					<h1>Google Sheets Integration</h1>
-					<p class="subtitle">Live Playgrounds & Component Diagnostics</p>
+					<p class="subtitle">
+						Live Playgrounds & Component Diagnostics
+					</p>
 				</div>
 			</div>
 			<div class="actions">
-				<button 
-					@click="refreshData" 
+				<button
 					class="btn btn-primary"
 					:class="{ loading: pending }"
 					:disabled="pending"
+					@click="refreshData"
 				>
 					<span class="btn-text">{{ pending ? 'Refreshing...' : 'Invalidate & Refresh' }}</span>
 				</button>
@@ -26,13 +37,20 @@
 
 		<main class="app-content">
 			<!-- Error State -->
-			<div v-if="error" class="card error-card">
+			<div
+				v-if="error"
+				class="card error-card"
+			>
 				<div class="error-header">
-					<span class="error-dot"></span>
+					<span class="error-dot" />
 					<h3>Data Acquisition Failed</h3>
 				</div>
-				<p class="error-msg">{{ error.message || error.statusMessage || error }}</p>
-				<p class="error-hint">Verify your Google Sheets configurations or public sharing permissions in nuxt.config</p>
+				<p class="error-msg">
+					{{ error.message || error.statusMessage || error }}
+				</p>
+				<p class="error-hint">
+					Verify your Google Sheets configurations or public sharing permissions in nuxt.config
+				</p>
 			</div>
 
 			<!-- Dashboard Panels -->
@@ -46,17 +64,40 @@
 						<table v-if="objects && objects.length">
 							<thead>
 								<tr>
-									<th v-for="header in Object.keys(objects[0])" :key="header">{{ header }}</th>
+									<th
+										v-for="header in Object.keys(objects[0])"
+										:key="header"
+									>
+										{{ header }}
+									</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(row, idx) in objects" :key="idx">
-									<td v-for="(val, key) in row" :key="key">{{ val }}</td>
+								<tr
+									v-for="(row, idx) in objects"
+									:key="idx"
+								>
+									<td
+										v-for="(val, key) in row"
+										:key="key"
+									>
+										{{ val }}
+									</td>
 								</tr>
 							</tbody>
 						</table>
-						<div v-else-if="pending" class="loading-state">Fetching latest data...</div>
-						<div v-else class="empty-state">No parsed objects found</div>
+						<div
+							v-else-if="pending"
+							class="loading-state"
+						>
+							Fetching latest data...
+						</div>
+						<div
+							v-else
+							class="empty-state"
+						>
+							No parsed objects found
+						</div>
 					</div>
 				</section>
 
@@ -68,9 +109,12 @@
 					<div class="scroll-table-container">
 						<table v-if="rawData && rawData.length">
 							<tbody>
-								<tr v-for="(row, idx) in rawData" :key="idx">
-									<td 
-										v-for="(val, cIdx) in row" 
+								<tr
+									v-for="(row, idx) in rawData"
+									:key="idx"
+								>
+									<td
+										v-for="(val, cIdx) in row"
 										:key="cIdx"
 										:class="{ 'header-cell': idx === 0 }"
 									>
@@ -79,8 +123,18 @@
 								</tr>
 							</tbody>
 						</table>
-						<div v-else-if="pending" class="loading-state">Fetching latest data...</div>
-						<div v-else class="empty-state">No grid records loaded</div>
+						<div
+							v-else-if="pending"
+							class="loading-state"
+						>
+							Fetching latest data...
+						</div>
+						<div
+							v-else
+							class="empty-state"
+						>
+							No grid records loaded
+						</div>
 					</div>
 				</section>
 			</div>
@@ -91,17 +145,38 @@
 					<h2>Single Row Extraction <span class="badge badge-warning">useGSheetRow</span></h2>
 				</div>
 				<div class="row-extraction-body">
-					<p class="desc">Fetched row index <code>0</code> (typically column header row):</p>
-					<div v-if="headerRow && headerRow.length" class="tags-container">
-						<template v-for="(col, index) in headerRow" :key="index">
-							<span v-if="col !== null && col !== undefined && String(col).trim() !== ''" class="tag">
+					<p class="desc">
+						Fetched row index <code>0</code> (typically column header row):
+					</p>
+					<div
+						v-if="headerRow && headerRow.length"
+						class="tags-container"
+					>
+						<template
+							v-for="(col, index) in headerRow"
+							:key="index"
+						>
+							<span
+								v-if="col !== null && col !== undefined && String(col).trim() !== ''"
+								class="tag"
+							>
 								<span class="tag-index">{{ index }}</span>
 								<span class="tag-text">{{ col }}</span>
 							</span>
 						</template>
 					</div>
-					<div v-else-if="pending" class="loading-state">Loading rows...</div>
-					<div v-else class="empty-state">No header row found</div>
+					<div
+						v-else-if="pending"
+						class="loading-state"
+					>
+						Loading rows...
+					</div>
+					<div
+						v-else
+						class="empty-state"
+					>
+						No header row found
+					</div>
 				</div>
 			</section>
 		</main>
@@ -139,7 +214,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-	background-image: 
+	background-image:
 		radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
 		radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
 	min-height: 100vh;

@@ -22,7 +22,8 @@ async function getSubtle() {
 	try {
 		const { webcrypto } = await import('node:crypto')
 		subtle = webcrypto.subtle
-	} catch {}
+	}
+	catch {}
 	return subtle
 }
 

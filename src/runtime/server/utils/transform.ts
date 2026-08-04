@@ -35,13 +35,16 @@ export function parseCsv(csvText: string, asObject: boolean = false): any[] {
 			if (inQuotes && nextChar === '"') {
 				currentVal += '"'
 				i++ // skip next quote
-			} else {
+			}
+			else {
 				inQuotes = !inQuotes
 			}
-		} else if (char === ',' && !inQuotes) {
+		}
+		else if (char === ',' && !inQuotes) {
 			row.push(currentVal)
 			currentVal = ''
-		} else if ((char === '\r' || char === '\n') && !inQuotes) {
+		}
+		else if ((char === '\r' || char === '\n') && !inQuotes) {
 			if (char === '\r' && nextChar === '\n') {
 				i++
 			}
@@ -49,7 +52,8 @@ export function parseCsv(csvText: string, asObject: boolean = false): any[] {
 			lines.push(row)
 			row = []
 			currentVal = ''
-		} else {
+		}
+		else {
 			currentVal += char
 		}
 	}

@@ -21,7 +21,7 @@ export function useGSheet<T = any>(range: string, options: ExtendedComposablesOp
 		if (options.sheet) q.sheet = options.sheet
 		if (options.valueRenderOption) q.valueRenderOption = options.valueRenderOption
 		if (options.query) q.query = options.query
-		
+
 		if (options.cache === false || bypass.value) {
 			q.bypassCache = 'true'
 		}
@@ -41,7 +41,8 @@ export function useGSheet<T = any>(range: string, options: ExtendedComposablesOp
 		bypass.value = true
 		try {
 			await fetchResult.refresh()
-		} finally {
+		}
+		finally {
 			bypass.value = false
 		}
 	}
