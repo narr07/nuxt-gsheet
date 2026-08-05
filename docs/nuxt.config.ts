@@ -102,5 +102,9 @@ export default defineNuxtConfig({
 
   ogImage: {
     zeroRuntime: true
+  },
+
+  vite: {
+    oxc: false
   }
 })
