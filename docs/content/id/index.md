@@ -41,16 +41,6 @@ Gunakan kemudahan Google Sheets sebagai database Anda. Pengambilan data publik t
 
 #default
   :::prose-pre
-  ---
-  code: |
-    // Auto-imported composable di Nuxt 3/4
-    const { data: siswa } = await useGSheetAsObject('A1:Z100', {
-      sheet: 'siswa',
-      cacheMaxAge: 300 // cache 5 menit
-    })
-  filename: app.vue
-  ---
-
   ```vue [app.vue]
   const { data: siswa } = await useGSheetAsObject('A1:Z100', {
     sheet: 'siswa',
