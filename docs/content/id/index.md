@@ -20,7 +20,7 @@ Gunakan kemudahan Google Sheets sebagai database Anda. Pengambilan data publik t
 #links
   :::u-button
   ---
-  to: /id/getting-started
+  to: /id/docs/getting-started
   size: xl
   trailing-icon: i-lucide-arrow-right
   ---
@@ -39,12 +39,34 @@ Gunakan kemudahan Google Sheets sebagai database Anda. Pengambilan data publik t
   GitHub Repo
   :::
 
+
 #default
   :::prose-pre
-  ```vue [app.vue]
-  const { data: siswa } = await useGSheetAsObject('A1:Z100', {
-    sheet: 'siswa',
-    cacheMaxAge: 300
+  ---
+  code: |
+    export default defineNuxtConfig({
+      modules: [
+        '@nuxt/ui',
+        '@nuxt/content',
+        'nuxt-og-image',
+        'nuxt-llms'
+      ],
+
+      css: ['~/assets/css/main.css']
+    })
+  filename: nuxt.config.ts
+  ---
+
+  ```ts [nuxt.config.ts]
+  export default defineNuxtConfig({
+    modules: [
+      '@nuxt/ui',
+      '@nuxt/content',
+      'nuxt-og-image',
+      'nuxt-llms'
+    ],
+
+    css: ['~/assets/css/main.css']
   })
   ```
   :::

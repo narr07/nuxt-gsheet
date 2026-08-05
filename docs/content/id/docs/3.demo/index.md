@@ -1,0 +1,109 @@
+---
+title: Demo Langsung
+description: Eksplorasi implementasi nyata nuxt-gsheet dengan kapabilitas CRUD lengkap dalam lingkungan playground.
+---
+
+# Demo Langsung
+
+Paket `nuxt-gsheet` dilengkapi dengan lingkungan playground (uji coba) bawaan. Playground ini berfungsi sebagai referensi implementasi langsung di mana Anda dapat melihat grid mentah, melakukan pemetaan baris menjadi objek, serta melakukan modifikasi database Google Sheets secara real-time.
+
+## Menjalankan Playground
+
+Anda dapat menjalankan server pengembangan playground secara lokal untuk mencoba demo ini. Jalankan perintah berikut di root folder repository Anda:
+
+```bash [Terminal]
+# Instal dependensi dan jalankan server playground
+bun install
+bun run dev
+```
+
+Buka browser Anda dan akses `http://localhost:3000` untuk melihat data tabel siswa yang dimuat secara real-time langsung dari Google Spreadsheet publik.
+
+## Kode Implementasi Demo
+
+Halaman dashboard demo pada playground memanfaatkan composables klien kami yang di-auto-import secara otomatis. Halaman tersebut mengambil data spreadsheet publik, memetakan baris menjadi objek JavaScript, serta menampilkan baris header kolom teratas.
+
+Berikut adalah penyederhanaan dari kode `app.vue` yang digunakan pada dashboard demo:
+
+```vue [playground/app.vue]
+<script setup>
+// Mengambil data grid mentah. Mengembalikan { data, pending, error, refresh }
+const { data: rawData, pending, error, refresh } = await useGSheet('Class Data!A1:F10')
+
+// Otomatis memetakan nilai sel menjadi kunci objek (header)
+const { data: objects } = await useGSheetAsObject('Class Data!A1:F10')
+
+// Mengekstrak baris ke-0 (header)
+const { data: headerRow } = await useGSheetRow('Class Data!A1:F10', 0)
+</script>
+
+<template>
+  <main class="dashboard">
+    <!-- Menampilkan tag header dari baris ke-0 -->
+    <div class="tags-container">
+      <span v-for="tag in headerRow" :key="tag" class="tag">
+        {{ tag }}
+      </span>
+    </div>
+
+    <!-- Grid Data Tabel -->
+    <table class="grid-table">
+      <tr v-for="(row, idx) in rawData" :key="idx">
+        <td v-for="(cell, cIdx) in row" :key="cIdx">
+          {{ cell }}
+        </td>
+      </tr>
+    </table>
+  </main>
+</template>
+```
+
+## Demo Proxy Google Apps Script
+
+Berikut adalah endpoint Google Apps Script Web App aktif yang digunakan pada mode `appscript` untuk operasi baca & tulis yang aman:
+
+```env [.env]
+GSHEET_APPSCRIPT_URL=https://script.google.com/macros/s/AKfycbzxQy164ISaJVAwErxdp5GKAeypRiW_H8-EM2Zxo6MZA_kRyY_x9-OmhJvnYZWReCFRJA/exec
+```
+
+```vue [app.vue]
+<script setup>
+// Pengambilan & penulisan data via proxy Apps Script
+const { data: siswa, pending, refresh } = await useGSheetAsObject('A1:Z100', {
+  sheet: 'siswa',
+  mode: 'appscript',
+  appscriptUrl: 'https://script.google.com/macros/s/AKfycbzxQy164ISaJVAwErxdp5GKAeypRiW_H8-EM2Zxo6MZA_kRyY_x9-OmhJvnYZWReCFRJA/exec'
+})
+</script>
+
+<template>
+  <div class="data-container">
+    <div class="header">
+      <h2>Data Siswa</h2>
+      <button :disabled="pending" @click="refresh()">
+        Refresh Data
+      </button>
+    </div>
+
+    <!-- Tampilkan data dalam tabel -->
+    <table v-if="siswa?.length" class="data-table">
+      <thead>
+        <tr>
+          <th v-for="(val, key) in siswa[0]" :key="key">
+            {{ key }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(row, index) in siswa" :key="index">
+          <td v-for="(val, key) in row" :key="key">
+            {{ val }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p v-else-if="pending">Memuat data dari Google Sheets...</p>
+  </div>
+</template>
+```

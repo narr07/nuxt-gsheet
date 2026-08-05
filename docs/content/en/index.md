@@ -20,7 +20,7 @@ Unleash the power of Google Sheets as a database. Zero-config public reads, secu
 #links
   :::u-button
   ---
-  to: /getting-started
+  to: /docs/getting-started
   size: xl
   trailing-icon: i-lucide-arrow-right
   ---

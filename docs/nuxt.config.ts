@@ -1,47 +1,106 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  extends: ['docus'],
-  modules: ['@nuxtjs/i18n'],
-  i18n: {
-    defaultLocale: 'en',
-    locales: [{
-      code: 'en',
-      name: 'English',
-    }, {
-      code: 'id',
-      name: 'Indonesia',
-    }],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/image',
+    '@nuxt/ui',
+    '@nuxt/content',
+    'nuxt-og-image',
+    'nuxt-llms',
+    '@nuxtjs/mcp-toolkit',
+    '@nuxtjs/i18n'
+  ],
+
+  devtools: {
+    enabled: true
   },
-   llms: {
-    domain: 'nuxtgsheet.permadi.dev',
-    title: 'Nuxt Docs Template',
-    description: 'A template for building documentation with Nuxt UI and Nuxt Content.',
+
+  css: ['~/assets/css/main.css'],
+
+  content: {
+    build: {
+      markdown: {
+        toc: {
+          searchDepth: 1
+        }
+      }
+    },
+    experimental: {
+      sqliteConnector: 'native'
+    }
+  },
+
+  experimental: {
+    asyncContext: true
+  },
+
+  compatibilityDate: '2026-06-30',
+
+  nitro: {
+    prerender: {
+      routes: [
+        '/'
+      ],
+      crawlLinks: true
+    }
+  },
+
+  eslint: {
+    config: {
+      stylistic: {
+        commaDangle: 'never',
+        braceStyle: '1tbs'
+      }
+    }
+  },
+  i18n: {
+    locales: [
+      { code: 'en', language: 'en-US', name: 'English' },
+      { code: 'id', language: 'id-ID', name: 'Indonesia' }
+    ],
+    defaultLocale: 'en',
+    strategy: 'prefix',
+    baseUrl: 'https://nuxtgsheet.permadi.dev'
+  },
+
+  llms: {
+    domain: 'https://nuxtgsheet.permadi.dev',
+    title: 'nuxt-gsheet',
+    description: 'Ultra-fast, zero-config Google Sheets integration for Nuxt 3 and 4 with built-in stampede-proof caching, multiple auth modes, and DevTools metrics.',
     full: {
-      title: 'Nuxt Docs Template - Full Documentation',
-      description: 'This is the full documentation for the Nuxt Docs Template.'
+      title: 'nuxt-gsheet - Full Documentation',
+      description: 'Complete documentation, composables API reference, and examples for nuxt-gsheet.'
     },
     sections: [
       {
         title: 'Getting Started',
-        contentCollection: 'docs',
+        contentCollection: 'docs_en',
         contentFilters: [
-          { field: 'path', operator: 'LIKE', value: '/getting-started%' }
+          { field: 'path', operator: 'LIKE', value: '%getting-started%' }
         ]
       },
       {
-        title: 'Essentials',
-        contentCollection: 'docs',
+        title: 'Composables',
+        contentCollection: 'docs_en',
         contentFilters: [
-          { field: 'path', operator: 'LIKE', value: '/essentials%' }
+          { field: 'path', operator: 'LIKE', value: '%composables%' }
+        ]
+      },
+      {
+        title: 'Demo',
+        contentCollection: 'docs_en',
+        contentFilters: [
+          { field: 'path', operator: 'LIKE', value: '%demo%' }
         ]
       }
     ]
   },
 
   mcp: {
-    name: 'Docs template'
+    name: 'nuxt-gsheet'
   },
 
   ogImage: {
     zeroRuntime: true
-}
+  }
 })

@@ -1,0 +1,71 @@
+---
+title: Memulai Cepat
+description: Pelajari cara instalasi, konfigurasi, dan mengamankan integrasi Google Sheets Anda di Nuxt.
+---
+
+# Memulai Cepat
+
+Modul `nuxt-gsheet` menyediakan integrasi berkinerja tinggi, aman, dan type-safe antara Nuxt dengan Google Sheets. Modul ini mendukung berbagai mode autentikasi, server-side proxying, caching anti-stampede, serta visualisasi metrik pada DevTools.
+
+## Instalasi
+
+Tambahkan modul ke dalam dependensi proyek Nuxt Anda:
+
+```bash [Terminal]
+bun add nuxt-gsheet
+```
+
+## Konfigurasi Dasar
+
+Daftarkan modul di dalam file `nuxt.config.ts` Anda.
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  modules: ['nuxt-gsheet'],
+  
+  gsheet: {
+    // Konfigurasi opsi default di sini
+    cache: {
+      enabled: true,
+      maxAge: 300 // Caching selama 5 menit
+    }
+  }
+})
+```
+
+## Keamanan & Variabel Lingkungan (.env)
+
+Untuk mengamankan URL Google Sheets, API key, atau kredensial private key Anda, simpanlah di dalam file `.env`. Server-side proxy modul ini akan membaca variabel lingkungan tersebut secara otomatis. Karena semua request diproses di sisi server, kredensial Anda tidak akan pernah bocor ke browser pengunjung.
+
+Tambahkan variabel berikut ke file `.env` Anda:
+
+```env [.env]
+# URL Google Apps Script Web App (Mode: appscript)
+GSHEET_APPSCRIPT_URL=https://script.google.com/macros/s/AKfycbzxQy164ISaJVAwErxdp5GKAeypRiW_H8-EM2Zxo6MZA_kRyY_x9-OmhJvnYZWReCFRJA/exec
+
+# Google Sheets Spreadsheet ID (Modes: gviz, csv, apikey, service-account)
+GSHEET_SPREADSHEET_ID=spreadsheet-id-anda
+
+# API Key (Mode: apikey)
+GSHEET_API_KEY=google-api-key-anda
+
+# Kredensial Service Account (Mode: service-account)
+GSHEET_CLIENT_EMAIL=email-service-account-anda@gcp.com
+GSHEET_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
+
+## Mode Autentikasi
+
+Modul ini mendeteksi secara otomatis mode terbaik yang akan digunakan berdasarkan kredensial yang aktif di `.env` Anda:
+
+| Mode | Metode Autentikasi | Kemampuan | Membutuhkan API Key |
+| --- | --- | --- | --- |
+| `gviz` | Google Query via URL Publik | Hanya Baca (GQL) | Tidak |
+| `csv` | Ekspor CSV Langsung | Hanya Baca | Tidak |
+| `appscript` | Proxy Apps Script | Baca & Tulis | Tidak |
+| `apikey` | API Key Sheets Standar | Hanya Baca | Ya |
+| `service-account` | JWT Signing Kredensial | Baca & Tulis | Ya (Service Account) |
+
+::tip
+Gunakan mode `appscript` jika Anda memerlukan akses baca & tulis sederhana tanpa harus membuat GCP Service Account atau menyiapkan project di Google Cloud Console.
+::
