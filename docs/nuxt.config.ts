@@ -53,58 +53,38 @@ export default defineNuxtConfig({
       }
     }
   },
-  i18n: {
-    locales: [
-      { code: 'en', language: 'en-US', name: 'English' },
-      { code: 'id', language: 'id-ID', name: 'Indonesia' }
-    ],
-    defaultLocale: 'en',
-    strategy: 'prefix',
-    baseUrl: 'https://nuxtgsheet.permadi.dev'
-  },
 
   llms: {
-    domain: 'https://nuxtgsheet.permadi.dev',
-    title: 'nuxt-gsheet',
-    description: 'Ultra-fast, zero-config Google Sheets integration for Nuxt 3 and 4 with built-in stampede-proof caching, multiple auth modes, and DevTools metrics.',
+    domain: 'https://docs-template.nuxt.dev/',
+    title: 'Nuxt Docs Template',
+    description: 'A template for building documentation with Nuxt UI and Nuxt Content.',
     full: {
-      title: 'nuxt-gsheet - Full Documentation',
-      description: 'Complete documentation, composables API reference, and examples for nuxt-gsheet.'
+      title: 'Nuxt Docs Template - Full Documentation',
+      description: 'This is the full documentation for the Nuxt Docs Template.'
     },
     sections: [
       {
         title: 'Getting Started',
-        contentCollection: 'docs_en',
+        contentCollection: 'docs',
         contentFilters: [
-          { field: 'path', operator: 'LIKE', value: '%getting-started%' }
+          { field: 'path', operator: 'LIKE', value: '/getting-started%' }
         ]
       },
       {
-        title: 'Composables',
-        contentCollection: 'docs_en',
+        title: 'Essentials',
+        contentCollection: 'docs',
         contentFilters: [
-          { field: 'path', operator: 'LIKE', value: '%composables%' }
-        ]
-      },
-      {
-        title: 'Demo',
-        contentCollection: 'docs_en',
-        contentFilters: [
-          { field: 'path', operator: 'LIKE', value: '%demo%' }
+          { field: 'path', operator: 'LIKE', value: '/essentials%' }
         ]
       }
     ]
   },
 
   mcp: {
-    name: 'nuxt-gsheet'
+    name: 'Docs template'
   },
 
   ogImage: {
     zeroRuntime: true
-  },
-
-  vite: {
-    oxc: false
   }
 })

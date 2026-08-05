@@ -38,15 +38,11 @@ const { header } = useAppConfig()
       v-else
       #left
     >
-      <NuxtLink
-        :to="header?.to || '/'"
-        class="flex items-center gap-2.5 font-bold text-lg"
-      >
-        <AppLogo class="w-auto h-8 shrink-0" />
-        <span class="hidden sm:inline-block">
-          Nuxt-<span class="text-emerald-500">GSheet</span>
-        </span>
+      <NuxtLink :to="header?.to || '/'">
+        <AppLogo class="w-auto h-6 shrink-0" />
       </NuxtLink>
+
+      <TemplateMenu />
     </template>
 
     <template #right>
@@ -54,8 +50,6 @@ const { header } = useAppConfig()
         v-if="header?.search"
         class="lg:hidden"
       />
-
-      <LocaleSwitcher />
 
       <UColorModeButton v-if="header?.colorMode" />
 

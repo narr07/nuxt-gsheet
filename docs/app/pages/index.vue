@@ -1,19 +1,7 @@
-<!-- app\pages\index.vue -->
 <script setup lang="ts">
-const route = useRoute()
-const { locale } = useI18n()
-
-// Gunakan computed untuk menentukan koleksi (landing_en atau landing_id)
-const collectionName = computed(() => locale.value === 'id' ? 'landing_id' : 'landing_en')
-
-// Data ditarik berdasarkan path saat ini (/ atau /id)
-const { data: page } = await useAsyncData(`index-${locale.value}-${route.path}`, () => {
-  const targetPath = route.path.replace(/\/$/, '') || '/'
-  return queryCollection(collectionName.value).path(targetPath).first()
-})
-
+const { data: page } = await useAsyncData('index', () => queryCollection('landing').path('/').first())
 if (!page.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Halaman tidak ditemukan', fatal: true })
+  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }
 
 const title = page.value.seo?.title || page.value.title

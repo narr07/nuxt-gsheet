@@ -1,4 +1,3 @@
-<!-- app\pages\[...slug].vue -->
 <script setup lang="ts">
 import type { ContentNavigationItem } from '@nuxt/content'
 import { findPageHeadline } from '@nuxt/content/utils'
@@ -8,34 +7,16 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { locale } = useI18n()
 const { toc } = useAppConfig()
 const navigation = inject<Ref<ContentNavigationItem[]>>('navigation')
 
-// Pilih koleksi berdasarkan locale aktif (docs_en atau docs_id)
-const collection = computed(() => locale.value === 'id' ? 'docs_id' : 'docs_en')
-
-// Otomatis mencari /en/docs/intro atau /id/docs/intro berdasarkan route.path
-const { data: page } = await useAsyncData(`docs-${locale.value}-${route.path}`, async () => {
-  let doc = await queryCollection(collection.value).path(route.path).first()
-  if (!doc) {
-    const fallbackPath = route.path.startsWith('/id/')
-      ? route.path.replace('/id/', '/id/docs/')
-      : route.path.startsWith('/en/')
-        ? route.path.replace('/en/', '/en/docs/')
-        : `/en/docs${route.path}`
-    doc = await queryCollection(collection.value).path(fallbackPath).first()
-  }
-  return doc
-})
-
+const { data: page } = await useAsyncData(route.path, () => queryCollection('docs').path(route.path).first())
 if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }
 
-// Ambil surround (sebelum/sesudah) dalam koleksi yang sama
-const { data: surround } = await useAsyncData(`docs-${locale.value}-${route.path}-surround`, () => {
-  return queryCollectionItemSurroundings(collection.value, route.path, {
+const { data: surround } = await useAsyncData(`${route.path}-surround`, () => {
+  return queryCollectionItemSurroundings('docs', route.path, {
     fields: ['description']
   })
 })
@@ -105,10 +86,27 @@ const links = computed(() => {
       <UContentToc
         :title="toc?.title"
         :links="page.body?.toc?.links"
-        highlight
-        highlight-color="primary"
-        highlight-variant="circuit"
-      />
+      >
+        <template
+          v-if="toc?.bottom"
+          #bottom
+        >
+          <div
+            class="hidden lg:block space-y-6"
+            :class="{ 'mt-6!': page.body?.toc?.links?.length }"
+          >
+            <USeparator
+              v-if="page.body?.toc?.links?.length"
+              type="dashed"
+            />
+
+            <UPageLinks
+              :title="toc.bottom.title"
+              :links="links"
+            />
+          </div>
+        </template>
+      </UContentToc>
     </template>
   </UPage>
 </template>
