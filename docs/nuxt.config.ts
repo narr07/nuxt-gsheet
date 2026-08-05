@@ -45,6 +45,20 @@ export default defineNuxtConfig({
     }
   },
 
+  vite: {
+    oxc: {
+      tsconfigRaw: {
+        compilerOptions: {
+          target: 'ESNext',
+          module: 'ESNext',
+          moduleResolution: 'bundler',
+          jsx: 'preserve',
+          jsxImportSource: 'vue'
+        }
+      }
+    }
+  },
+
   eslint: {
     config: {
       stylistic: {
