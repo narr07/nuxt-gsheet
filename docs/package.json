@@ -6,7 +6,7 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "node patch-plugin-vue.mjs && nuxt prepare",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck"
   },
