@@ -1,23 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./app/*"],
-      "@/*": ["./app/*"],
-      "~~/*": ["./*"],
-      "@@/*": ["./*"]
-    }
-  },
-  "include": [
-    "app/**/*",
-    "content.config.ts",
-    "nuxt.config.ts"
-  ]
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }

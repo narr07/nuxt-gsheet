@@ -102,19 +102,5 @@ export default defineNuxtConfig({
 
   ogImage: {
     zeroRuntime: true
-  },
-
-  vite: {
-    esbuild: {
-      tsconfigRaw: {
-        compilerOptions: {
-          target: 'ESNext',
-          module: 'ESNext',
-          moduleResolution: 'bundler',
-          jsx: 'preserve',
-          jsxImportSource: 'vue'
-        }
-      }
-    }
   }
 })
