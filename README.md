@@ -4,11 +4,13 @@
 [![npm downloads](https://img.shields.io/npm/dm/nuxt-gsheet.svg?style=flat&colorA=020420&colorB=00DC82)](https://npm.chart.dev/nuxt-gsheet)
 [![License](https://img.shields.io/npm/l/nuxt-gsheet.svg?style=flat&colorA=020420&colorB=00DC82)](https://npmjs.com/package/nuxt-gsheet)
 [![Nuxt](https://img.shields.io/badge/Nuxt-020420?logo=nuxt)](https://nuxt.com)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/narr07/nuxt-gsheet?file=playground%2Fapp.vue)
 
 Ultra-fast, zero-config Google Sheets integration for Nuxt 3 and Nuxt 4. Use Google Sheets as a database with built-in stampede-proof caching, multi-authentication modes (including API-free GViz and Apps Script), and a custom DevTools dashboard.
 
 - [✨ &nbsp;Release Notes](./CHANGELOG.md)
 - [📖 &nbsp;Bilingual Documentation](./docs)
+- [⚡️ &nbsp;Online Demo (StackBlitz)](https://stackblitz.com/github/narr07/nuxt-gsheet?file=playground%2Fapp.vue)
 
 ## Features
 
