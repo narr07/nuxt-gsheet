@@ -30,7 +30,10 @@ async function getSubtle() {
 function base64url(arr: Uint8Array): string {
 	let binary = ''
 	for (let i = 0; i < arr.byteLength; i++) {
-		binary += String.fromCharCode(arr[i])
+		const byte = arr[i]
+		if (byte !== undefined) {
+			binary += String.fromCharCode(byte)
+		}
 	}
 	return btoa(binary)
 		.replace(/=/g, '')
@@ -107,7 +110,8 @@ export async function getAccessToken(clientEmail: string, privateKey: string): P
 
 	cachedToken = response.access_token
 	// Expire 1 minute early to guarantee valid requests
-	tokenExpiry = now + (response.expires_in - 60) * 1000
+	const expiresIn = Number(response.expires_in) || 3600
+	tokenExpiry = now + (expiresIn - 60) * 1000
 
 	return cachedToken!
 }

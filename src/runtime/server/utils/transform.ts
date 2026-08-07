@@ -4,6 +4,7 @@
 export function rowsToObjects(rows: any[][]): any[] {
 	if (!Array.isArray(rows) || rows.length < 2) return []
 	const [headers, ...dataRows] = rows
+	if (!headers) return []
 	return dataRows.map((row) => {
 		const obj: any = {}
 		headers.forEach((header, idx) => {

@@ -35,7 +35,7 @@ export default defineNuxtModule<ModuleOptions>({
 		nuxt.options.runtimeConfig.gsheet = {
 			...nuxt.options.runtimeConfig.gsheet,
 			...options
-		}
+		} as any
 
 		// Register server proxy handlers
 		addServerHandler({
