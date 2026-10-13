@@ -18,6 +18,7 @@ Ultra-fast, zero-config Google Sheets integration for Nuxt 3 and Nuxt 4. Use Goo
 - **🔒 Secure Server Proxy**: Keeps Google sheet URLs, API keys, and Service Account JWT tokens strictly on the server-side, hiding them from the client browser.
 - **🛡️ Stampede Lock Protection**: Serves stale cache on network/quota failure and prevents concurrent fetches from overloading your Apps Script or API quota limit.
 - **🧪 Type-Safe Composables**: Auto-imported client hooks to extract cell grids (`useGSheet`), transposing rows to JavaScript objects (`useGSheetAsObject`), retrieving specific rows (`useGSheetRow`), and writing data (`useGSheetWrite`).
+- **🧩 Nuxt 3, 4 and 5**: Server routes are written against `nuxt/server` with a Nitro v2 fallback, so one package runs on Nuxt 3.10+, Nuxt 4 and Nuxt 5.
 - **📋 Markdown Tables**: Drop a live sheet into any Markdown page with `::gsheet-table`, rendered on the server through the same proxy and cache.
 - **📊 DevTools Dashboard**: Real-time tracking of intercepted API calls, cache hit/miss ratio, active auth mode, and estimated API quota usage.
 

@@ -30,6 +30,13 @@ export default defineNuxtModule<ModuleOptions>({
 	setup(options, nuxt) {
 		const resolver = createResolver(import.meta.url)
 
+		// Each server route ships two entries: one written against `nuxt/server`, which runs on
+		// any server builder (Nuxt 4.6+ and Nuxt 5), and a `.legacy` one for Nitro v2 and h3 v1
+		const serverHandler = (file: string) => ({
+			nuxt: resolver.resolve(file),
+			nitro2: resolver.resolve(file + '.legacy')
+		})
+
 		// Expose module configurations to runtime configuration
 		// Use defu (deep config merging) to merge options
 		nuxt.options.runtimeConfig.gsheet = {
@@ -41,25 +48,25 @@ export default defineNuxtModule<ModuleOptions>({
 		addServerHandler({
 			route: '/api/_gsheet/values/:range',
 			method: 'get',
-			handler: resolver.resolve('./runtime/server/api/_gsheet/values/[range].get')
+			handler: serverHandler('./runtime/server/api/_gsheet/values/[range].get')
 		})
 
 		addServerHandler({
 			route: '/api/_gsheet/append',
 			method: 'post',
-			handler: resolver.resolve('./runtime/server/api/_gsheet/append.post')
+			handler: serverHandler('./runtime/server/api/_gsheet/append.post')
 		})
 
 		addServerHandler({
 			route: '/api/_gsheet/update',
 			method: 'put',
-			handler: resolver.resolve('./runtime/server/api/_gsheet/update.put')
+			handler: serverHandler('./runtime/server/api/_gsheet/update.put')
 		})
 
 		addServerHandler({
 			route: '/api/_gsheet/clear',
 			method: 'delete',
-			handler: resolver.resolve('./runtime/server/api/_gsheet/clear.delete')
+			handler: serverHandler('./runtime/server/api/_gsheet/clear.delete')
 		})
 
 		// Register Metrics and DevTools handlers in development only:
@@ -68,13 +75,13 @@ export default defineNuxtModule<ModuleOptions>({
 			addServerHandler({
 				route: '/api/_gsheet/metrics',
 				method: 'get',
-				handler: resolver.resolve('./runtime/server/api/_gsheet/metrics.get')
+				handler: serverHandler('./runtime/server/api/_gsheet/metrics.get')
 			})
 
 			addServerHandler({
 				route: '/api/_gsheet/devtools',
 				method: 'get',
-				handler: resolver.resolve('./runtime/server/api/_gsheet/devtools.get')
+				handler: serverHandler('./runtime/server/api/_gsheet/devtools.get')
 			})
 		}
 

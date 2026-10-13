@@ -1,3 +1,5 @@
+import { requestJson } from './request'
+
 let subtle: any = globalThis.crypto?.subtle
 
 function pemToDer(pem: string): ArrayBuffer {
@@ -93,7 +95,7 @@ export async function getAccessToken(clientEmail: string, privateKey: string): P
 
 	const assertion = await signJwt(clientEmail, privateKey)
 
-	const response = await $fetch<any>('https://oauth2.googleapis.com/token', {
+	const response = await requestJson('https://oauth2.googleapis.com/token', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded'

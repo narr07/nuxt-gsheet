@@ -1,0 +1,139 @@
+import type { ServerHelpers } from '../utils/server-helpers'
+import { requestJson } from '../utils/request'
+import { getAccessToken } from '../utils/auth'
+import { incrementRequests, incrementQuotaUsage } from '../utils/metrics'
+
+export function createUpdateHandler<Event>(h: ServerHelpers<Event>) {
+	return async (event: Event) => {
+		incrementRequests()
+
+		const body = await h.readBody(event)
+		if (!body) {
+			throw h.createError({
+				status: 400,
+				statusText: 'Request body is required',
+				data: { errorCode: 'NOT_FOUND' }
+			})
+		}
+
+		const sheet = body.sheet ? String(body.sheet) : undefined
+		const range = body.range ? String(body.range) : undefined
+		const values = body.values
+
+		if (!range) {
+			throw h.createError({
+				status: 400,
+				statusText: 'Range coordinate is required for update operation',
+				data: { errorCode: 'NOT_FOUND' }
+			})
+		}
+
+		if (!values || !Array.isArray(values)) {
+			throw h.createError({
+				status: 400,
+				statusText: 'Values data must be a two-dimensional array',
+				data: { errorCode: 'NOT_FOUND' }
+			})
+		}
+
+		const config = h.useRuntimeConfig().gsheet || {}
+		const clientEmail = config.credentials?.clientEmail || process.env.GSHEET_CLIENT_EMAIL
+		const privateKey = config.credentials?.privateKey || process.env.GSHEET_PRIVATE_KEY
+		const spreadsheetId = config.spreadsheetId || process.env.GSHEET_SPREADSHEET_ID
+		const appscriptUrl = config.appscriptUrl || process.env.GSHEET_APPSCRIPT_URL
+
+		// Resolve mode
+		let resolvedMode = config.auth
+		if (!resolvedMode) {
+			if (appscriptUrl) {
+				resolvedMode = 'appscript'
+			}
+			else if (clientEmail && privateKey) {
+				resolvedMode = 'service-account'
+			}
+			else {
+				throw h.createError({
+					status: 400,
+					statusText: 'Write operations are not supported in read-only auth modes.',
+					data: { errorCode: 'UNAUTHORIZED' }
+				})
+			}
+		}
+
+		let targetSpreadsheetId = spreadsheetId
+		let targetAppscriptUrl = appscriptUrl
+
+		if (sheet && config.sheets && config.sheets[sheet]) {
+			const mapping = config.sheets[sheet]
+			const mappingStr = String(mapping)
+			if (mappingStr.startsWith('http')) {
+				targetAppscriptUrl = mappingStr
+			}
+			else {
+				targetSpreadsheetId = mappingStr
+			}
+		}
+
+		try {
+			if (resolvedMode === 'appscript') {
+				if (!targetAppscriptUrl) {
+					throw new Error('Apps Script Web App URL is missing.')
+				}
+				const res = await requestJson(targetAppscriptUrl, {
+					method: 'POST',
+					body: {
+						action: 'update',
+						sheet,
+						range,
+						values
+					}
+				})
+				if (!res || !res.success) {
+					throw new Error(res?.error || 'Apps Script returned success: false')
+				}
+				incrementQuotaUsage(1)
+				return { success: true }
+			}
+			else if (resolvedMode === 'service-account') {
+				if (!targetSpreadsheetId) {
+					throw new Error('Spreadsheet ID is missing.')
+				}
+				if (!clientEmail || !privateKey) {
+					throw new Error('Service Account credentials are missing.')
+				}
+
+				const accessToken = await getAccessToken(clientEmail, privateKey)
+				const targetRange = sheet ? `${sheet}!${range}` : range
+				const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${targetSpreadsheetId}/values/${encodeURIComponent(targetRange)}`)
+				url.searchParams.set('valueInputOption', 'USER_ENTERED')
+
+				const res = await requestJson(url.toString(), {
+					method: 'PUT',
+					headers: {
+						'Authorization': `Bearer ${accessToken}`,
+						'Content-Type': 'application/json'
+					},
+					body: {
+						range: targetRange,
+						majorDimension: 'ROWS',
+						values
+					}
+				})
+
+				incrementQuotaUsage(1)
+				return { success: true, updatedCells: res.updatedCells }
+			}
+			else {
+				throw new Error(`Write actions are not supported for mode: ${resolvedMode}`)
+			}
+		}
+		catch (err: any) {
+			console.error(`[nuxt-gsheet] Update Error (${resolvedMode}):`, err.message || err)
+			throw h.createError({
+				status: err.status || err.statusCode || 500,
+				statusText: `Update failed: ${err.message || String(err)}`,
+				data: { errorCode: 'NETWORK_ERROR' }
+			})
+		}
+	}
+}
