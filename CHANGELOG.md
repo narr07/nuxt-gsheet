@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v1.4.0
+
+[compare changes](https://github.com/narr07/nuxt-gsheet/compare/v1.3.0...v1.4.0)
+
+### 🚀 Enhancements
+
+- Support nuxt v5 ([7cfd360](https://github.com/narr07/nuxt-gsheet/commit/7cfd360))
+
+### 🩹 Fixes
+
+- **types:** Narrow the header row in the table helper ([0820830](https://github.com/narr07/nuxt-gsheet/commit/0820830))
+- Remove the postinstall script from the published package ([9a877d8](https://github.com/narr07/nuxt-gsheet/commit/9a877d8))
+
+### ❤️ Contributors
+
+- Dinar, Permadi ([@narr07](https://github.com/narr07))
+
 ## v1.3.0
 
 [compare changes](https://github.com/narr07/nuxt-gsheet/compare/v1.2.0...v1.3.0)
