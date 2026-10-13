@@ -18,6 +18,7 @@ Ultra-fast, zero-config Google Sheets integration for Nuxt 3 and Nuxt 4. Use Goo
 - **🔒 Secure Server Proxy**: Keeps Google sheet URLs, API keys, and Service Account JWT tokens strictly on the server-side, hiding them from the client browser.
 - **🛡️ Stampede Lock Protection**: Serves stale cache on network/quota failure and prevents concurrent fetches from overloading your Apps Script or API quota limit.
 - **🧪 Type-Safe Composables**: Auto-imported client hooks to extract cell grids (`useGSheet`), transposing rows to JavaScript objects (`useGSheetAsObject`), retrieving specific rows (`useGSheetRow`), and writing data (`useGSheetWrite`).
+- **📋 Markdown Tables**: Drop a live sheet into any Markdown page with `::gsheet-table`, rendered on the server through the same proxy and cache.
 - **📊 DevTools Dashboard**: Real-time tracking of intercepted API calls, cache hit/miss ratio, active auth mode, and estimated API quota usage.
 
 ## Quick Setup
@@ -105,6 +106,36 @@ const saveRecord = async () => {
   <button :disabled="pending" @click="saveRecord">
     Add Record
   </button>
+</template>
+```
+
+### Rendering a Sheet as a Table in Markdown
+`<GsheetTable>` is registered globally, so it works in `.vue` files and in Markdown rendered by Nuxt Content (MDC). The first row of the range becomes the table header:
+
+```md
+::gsheet-table{range="A1:F20" sheet="Class Data" columns="Student Name,Major" limit="10"}
+::
+```
+
+| Prop | Description |
+| --- | --- |
+| `range` | Cell range to read, first row included as headers (required). |
+| `sheet` | Sheet name or key from the `sheets` map. |
+| `columns` | Header names to show, in that order. Comma-separated string or array. |
+| `limit` | Maximum number of body rows. |
+| `offset` | Number of body rows to skip before the first one shown. |
+| `query` | GViz query string (`gviz` mode only). |
+
+The same syntax works with [Comark](https://comark.dev). Its Vue renderer picks up globally registered components, or you can pass the component explicitly:
+
+```vue
+<script setup>
+import { Markdown } from '@comark/vue'
+import { GsheetTable } from '#components'
+</script>
+
+<template>
+  <Markdown :components="{ GsheetTable }">{{ content }}</Markdown>
 </template>
 ```
 

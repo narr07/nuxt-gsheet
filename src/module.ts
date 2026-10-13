@@ -1,4 +1,4 @@
-import { defineNuxtModule, addServerHandler, addImportsDir, createResolver } from '@nuxt/kit'
+import { defineNuxtModule, addServerHandler, addImportsDir, addComponent, createResolver } from '@nuxt/kit'
 import type { ModuleOptions } from './types'
 
 export type { ModuleOptions }
@@ -77,6 +77,13 @@ export default defineNuxtModule<ModuleOptions>({
 
 		// Enable auto-importing of client composables
 		addImportsDir(resolver.resolve('./runtime/composables'))
+
+		// Register <GsheetTable> globally so markdown renderers can resolve ::gsheet-table
+		addComponent({
+			name: 'GsheetTable',
+			filePath: resolver.resolve('./runtime/components/GsheetTable.vue'),
+			global: true
+		})
 
 		// Hook into Nuxt DevTools to append a custom tab
 		// @ts-ignore
