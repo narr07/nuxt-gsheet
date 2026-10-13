@@ -21,7 +21,8 @@ export function buildTable(raw: unknown, options: GSheetTableOptions = {}): GShe
 		return { headers: [], rows: [] }
 	}
 
-	const [headerRow, ...dataRows] = raw as unknown[][]
+	const headerRow = raw[0] as unknown[]
+	const dataRows = raw.slice(1) as unknown[][]
 	const allHeaders = headerRow.map(header => toCell(header).trim())
 
 	const wanted = (Array.isArray(options.columns) ? options.columns : String(options.columns ?? '').split(','))
