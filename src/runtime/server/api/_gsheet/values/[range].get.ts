@@ -186,6 +186,7 @@ export default defineEventHandler(async (event) => {
 			}
 			const url = new URL(`https://docs.google.com/spreadsheets/d/${targetSpreadsheetId}/gviz/tq`)
 			url.searchParams.set('tqx', 'out:json')
+			url.searchParams.set('range', range)
 			if (sheet) url.searchParams.set('sheet', sheet)
 			if (gvizQuery) url.searchParams.set('tq', gvizQuery)
 
