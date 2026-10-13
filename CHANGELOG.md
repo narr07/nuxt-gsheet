@@ -1,6 +1,28 @@
 # Changelog
 
 
+## v1.3.0
+
+[compare changes](https://github.com/narr07/nuxt-gsheet/compare/v1.2.0...v1.3.0)
+
+### 🚀 Enhancements
+
+- Add GsheetTable component for rendering sheets as tables in markdown ([b3eb30b](https://github.com/narr07/nuxt-gsheet/commit/b3eb30b))
+
+### 🩹 Fixes
+
+- **gviz:** Apply the requested range to gviz requests ([f4fe337](https://github.com/narr07/nuxt-gsheet/commit/f4fe337))
+- Register devtools and metrics endpoints in development only ([7f3ced1](https://github.com/narr07/nuxt-gsheet/commit/7f3ced1))
+
+### 🏡 Chore
+
+- **release:** V1.2.0 ([514b606](https://github.com/narr07/nuxt-gsheet/commit/514b606))
+- Upgrade to Nuxt 4.6 and update dev dependencies ([e4af560](https://github.com/narr07/nuxt-gsheet/commit/e4af560))
+
+### ❤️ Contributors
+
+- Dinar, Permadi ([@narr07](https://github.com/narr07))
+
 ## v1.2.0
 
 [compare changes](https://github.com/narr07/nuxt-gsheet/compare/v1.1.0...v1.2.0)
