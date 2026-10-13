@@ -62,18 +62,21 @@ export default defineNuxtModule<ModuleOptions>({
 			handler: resolver.resolve('./runtime/server/api/_gsheet/clear.delete')
 		})
 
-		// Register Metrics and DevTools handlers
-		addServerHandler({
-			route: '/api/_gsheet/metrics',
-			method: 'get',
-			handler: resolver.resolve('./runtime/server/api/_gsheet/metrics.get')
-		})
+		// Register Metrics and DevTools handlers in development only:
+		// they expose config metadata (spreadsheet ID, Apps Script URL)
+		if (nuxt.options.dev) {
+			addServerHandler({
+				route: '/api/_gsheet/metrics',
+				method: 'get',
+				handler: resolver.resolve('./runtime/server/api/_gsheet/metrics.get')
+			})
 
-		addServerHandler({
-			route: '/api/_gsheet/devtools',
-			method: 'get',
-			handler: resolver.resolve('./runtime/server/api/_gsheet/devtools.get')
-		})
+			addServerHandler({
+				route: '/api/_gsheet/devtools',
+				method: 'get',
+				handler: resolver.resolve('./runtime/server/api/_gsheet/devtools.get')
+			})
+		}
 
 		// Enable auto-importing of client composables
 		addImportsDir(resolver.resolve('./runtime/composables'))

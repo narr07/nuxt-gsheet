@@ -13,6 +13,13 @@ describe('ssr', async () => {
 		expect(html).toContain('<div>basic</div>')
 	})
 
+	it('does not expose the DevTools endpoints outside development', async () => {
+		// The fixture has no pages, so unregistered routes fall through to app.vue
+		const metrics = await $fetch<unknown>('/api/_gsheet/metrics')
+		expect(metrics).toBeTypeOf('string')
+		expect(await $fetch<string>('/api/_gsheet/devtools')).not.toContain('Google Sheets Module DevTools')
+	})
+
 	it('renders <GsheetTable> on the server', async () => {
 		const html = await $fetch<string>('/')
 		expect(html).toContain('class="gsheet-table"')
