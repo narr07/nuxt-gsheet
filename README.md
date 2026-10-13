@@ -6,7 +6,7 @@
 [![Nuxt](https://img.shields.io/badge/Nuxt-020420?logo=nuxt)](https://nuxt.com)
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/narr07/nuxt-gsheet?file=playground%2Fapp.vue)
 
-Ultra-fast, zero-config Google Sheets integration for Nuxt 3 and Nuxt 4. Use Google Sheets as a database with built-in stampede-proof caching, multi-authentication modes (including API-free GViz and Apps Script), and a custom DevTools dashboard.
+Ultra-fast, zero-config Google Sheets integration for Nuxt 3, Nuxt 4 and Nuxt 5. Use Google Sheets as a database with built-in stampede-proof caching, multi-authentication modes (including API-free GViz and Apps Script), and a custom DevTools dashboard.
 
 - [✨ &nbsp;Release Notes](./CHANGELOG.md)
 - [📖 &nbsp;Bilingual Documentation](./docs)
@@ -74,7 +74,7 @@ Automatically maps column values to the header labels on the first row of your s
 
 ```vue
 <script setup>
-// Automatically auto-imported in Nuxt 3/4
+// Auto-imported by the module
 const { data: students, pending, error } = await useGSheetAsObject('A1:C10', {
   sheet: 'siswa'
 })
